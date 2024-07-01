@@ -71,4 +71,23 @@ function loop(root) {
   }
 }
 
-loop(binaryTree);
+// loop(binaryTree);
+
+function walk(root) {
+  const stack = [];
+  let cur = root;
+
+  while (cur || stack.length) {
+    while (cur) {
+      stack.push(cur);
+      cur = cur.left;
+    }
+
+    cur = stack.pop();
+    console.log(cur.value);
+
+    cur = cur.right;
+  }
+}
+
+walk(binaryTree);
