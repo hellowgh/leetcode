@@ -16,7 +16,7 @@ function solve(board: string[][]): void {
   // 遍历2横
   const arr2 = [0, h - 1];
   for (let j of arr2) {
-    for (let i = 0; i < l; i++) {
+    for (let i = 1; i < l - 1; i++) {
       if (board[j][i] === "O") {
         DFSGrid(board, i, j);
       }
