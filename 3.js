@@ -6,7 +6,7 @@ var lengthOfLongestSubstring = function (s) {
   const map = {};
 
   // 完全模拟人的行为
-  while (r < len - 1) {
+  while (r < len) {
     const letter = s[r];
     if (map[letter]) {
       map[letter]++;
@@ -17,6 +17,8 @@ var lengthOfLongestSubstring = function (s) {
       }
     } else {
       map[letter] = 1;
+
+      // 此时才有可能刷新最大值
       ret = Math.max(ret, r - l + 1);
     }
 
@@ -37,9 +39,37 @@ const m = {
 let s;
 s = "abcabcbb";
 s = "bbbbb";
-s = "pwwkew";
-s = "";
+// s = "pwwkew";
+// s = "";
 
-const ret = lengthOfLongestSubstring(s);
+const ret = method(s);
 
 console.log(ret);
+
+function method(s) {
+  const len = s.length;
+  let left = 0;
+  let right = 0;
+  let ret = 0;
+  const map = {};
+
+  while (right < len) {
+    const letter = s[right];
+    if (letter in map) {
+      map[letter]++;
+
+      while (map[letter] > 1) {
+        const ele = s[left];
+        map[ele]--;
+        left++;
+      }
+    } else {
+      map[letter] = 1;
+      ret = Math.max(ret, right - left + 1);
+    }
+
+    right++;
+  }
+
+  return ret;
+}
