@@ -5,6 +5,10 @@ var containsNearbyDuplicate = function (nums, k) {
   let r = k;
 
   while (r < nums.length) {
-    
+
+    r++;
+    l++;
   }
+
+  return false;
 };
