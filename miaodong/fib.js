@@ -9,21 +9,25 @@ function fib(n, memo = {}) {
   return memo[n];
 }
 
-console.log(fib(10));
-
 function loopFib(n) {
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+
   let pre = 0;
   let cur = 1;
-  let count = 1;
 
-  while (count < n) {
-    const cache = cur;
-    cur = cur + pre;
-    pre = cache;
-    count++;
+  for (let i = 2; i <= n; i++) {
+    const next = pre + cur;
+    pre = cur;
+    cur = next;
   }
 
-  return ret;
+  return cur;
 }
 
-// 
+//
+console.log(fib(5) === loopFib(5));
+
+// dp与递归中的子问题差别，递归是随便就成找到子问题，
+
+// 共同点是，都是假设别人已经实现了函数，解决了问题
