@@ -1,27 +1,16 @@
-
-function dp(nums) {
-    if (nums.length === 1) return nums;
+var lengthOfLIS = function(nums) {
+    const len = nums.length;
+    if (len <= 1) return len;
     
-    let list = [];
-    const arr = dp(nums.slice(0, nums.length - 1));
-    const last = arr[arr.length - 1];
-    const numsLast = nums[nums.length - 1];
-    if ( numsLast > last) {
-        list = [...arr, numsLast]
-    } else {
-        list = [...arr];
+    const dp = new Array(len);
+    let ret = 1;
+
+    for (let i = 0; i < len; i++) {
+        dp[i] = 1;
+        for (let j = 0; j <= i; j++) {
+            ret = Math.max();
+        }
     }
 
-    return list;
+    return ret;
 };
-
-function lengthOfLIS(nums) {
-    return dp(nums).length;
-};
-
-let nums;
-nums = [10,9,2,5,3,7,101,18];
-nums = [0,1,0,3,2,3]
-const ret = lengthOfLIS(nums);
-
-console.log(ret);
