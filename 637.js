@@ -11,8 +11,9 @@ var averageOfLevels = function (root) {
     for (let i = 0; i < len; i++) {
       const node = queue[i];
       if (node) {
-        cache.push(node.left, node.right);
         sum += node.val;
+        if (node.left) cache.push(node.left);
+        if (node.right) cache.push(node.right);
       }
     }
     ret.push(sum / len);
