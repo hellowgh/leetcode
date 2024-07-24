@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Code Metrics 3D Visualization</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="path/to/your/script.js"></script>
+
+    <script>
+      // 设置场景
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // 示例数据
+      const data = {
+        attributes: {},
+        children: [
+          {
+            attributes: {
+              code_size: 8,
+              commits_lines: 0,
+              methods_total_file: 0,
+              raw_lines: 9,
+              cyclomatic_complexity: 0,
+              code_duplication_ratio: 0,
+              code_defect_size: 0,
+            },
+            children: [],
+            link: "https://codehub-dg-y.huawei.com/NCE-Utility/LightIDE/CodeCovService/files?ref=lwx_dev&filePath=bin%2Fnode-port-env.py&isFile=true",
+            name: "node-port-env.py",
+            needDel: false,
+            type: "File",
+          },
+          {
+            attributes: {},
+            children: [
+              {
+                attributes: {
+                  code_size: 15,
+                  commits_lines: 5,
+                  methods_total_file: 2,
+                  raw_lines: 25,
+                  cyclomatic_complexity: 3,
+                  code_duplication_ratio: 0.1,
+                  code_defect_size: 1,
+                },
+                children: [],
+                link: "https://codehub-dg-y.huawei.com/NCE-Utility/LightIDE/CodeCovService/files?ref=lwx_dev&filePath=bin%2Fsubfolder%2Ffile1.py&isFile=true",
+                name: "file1.py",
+                needDel: false,
+                type: "File",
+              },
+            ],
+            link: "https://codehub-dg-y.huawei.com/NCE-Utility/LightIDE/CodeCovService/files?ref=lwx_dev&filePath=bin%2Fsubfolder",
+            name: "subfolder",
+            needDel: false,
+            type: "Folder",
+          },
+        ],
+        link: "https://codehub-dg-y.huawei.com/NCE-Utility/LightIDE/CodeCovService/files?ref=lwx_dev&filePath=bin",
+        name: "bin",
+        needDel: false,
+        type: "Folder",
+      };
+
+      // 根据数据创建3D模型
+      function createModel(
+        data,
+        parentObject,
+        position = { x: 0, y: 0, z: 0 }
+      ) {
+        const size =
+          data.attributes && data.attributes.code_size
+            ? data.attributes.code_size / 10
+            : 1;
+        const geometry = new THREE.BoxGeometry(size, size, size);
+        const material = new THREE.MeshBasicMaterial({
+          color: data.type === "Folder" ? 0x808080 : 0x0000ff,
+        });
+        const cube = new THREE.Mesh(geometry, material);
+
+        cube.position.set(position.x, position.y, position.z);
+        parentObject.add(cube);
+
+        if (data.children) {
+          const childPosition = { ...position };
+          childPosition.x += size * 1.5;
+          data.children.forEach((child, index) => {
+            childPosition.y -= size * 1.5;
+            createModel(child, parentObject, childPosition);
+          });
+        }
+      }
+
+      const rootObject = new THREE.Object3D();
+      createModel(data, rootObject);
+      scene.add(rootObject);
+
+      // 设置相机位置
+      camera.position.z = 10;
+
+      // 渲染函数
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>

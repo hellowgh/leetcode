@@ -1,11 +1,20 @@
-function calculateHeight(index) {
-  const m = 0.001;
-  const b = 20.2;
-  return m * index + b;
+// 原型式继承函数
+function inheritObject(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
 }
 
-console.log(calculateHeight(18));
-console.log(calculateHeight(1797));
+// 父对象
+function Parent() {
+  this.name = "Parent";
+  this.colors = ["red", "blue", "green"];
+}
+const parent = new Parent();
 
-// 18, 20.21,
-// 1797, 21.997
+// 子对象
+let child = inheritObject(parent);
+let child2 = inheritObject(parent);
+
+child.colors.push("black");
+console.log(child2.colors);
